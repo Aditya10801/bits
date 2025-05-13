@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BITS Qualification Checker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-blue-100 via-white to-pink-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="bg-white shadow-lg rounded-lg p-8 max-w-2xl w-full">
+    <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">BITS Qualification Checker</h1>
+
+    <form id="marksForm" class="space-y-6">
+      <!-- Subject Input Section -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Physics -->
+        <div>
+          <h2 class="font-semibold text-gray-700 mb-2">Physics</h2>
+          <input type="number" placeholder="Theory (out of 70)" id="physicsTheory" class="input-style" min="0" max="70">
+          <input type="number" placeholder="Practical (out of 30)" id="physicsPractical" class="input-style mt-2" min="0" max="30">
+        </div>
+        <!-- Chemistry -->
+        <div>
+          <h2 class="font-semibold text-gray-700 mb-2">Chemistry</h2>
+          <input type="number" placeholder="Theory (out of 70)" id="chemTheory" class="input-style" min="0" max="70">
+          <input type="number" placeholder="Practical (out of 30)" id="chemPractical" class="input-style mt-2" min="0" max="30">
+        </div>
+        <!-- Maths -->
+        <div>
+          <h2 class="font-semibold text-gray-700 mb-2">Maths</h2>
+          <input type="number" placeholder="Theory (out of 70)" id="mathsTheory" class="input-style" min="0" max="70">
+          <input type="number" placeholder="Practical (out of 30)" id="mathsPractical" class="input-style mt-2" min="0" max="30">
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="button" onclick="checkQualification()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+          Check Qualification
+        </button>
+      </div>
+    </form>
+
+    <!-- Result Output -->
+    <div id="result" class="mt-6 text-center text-lg font-semibold"></div>
+  </div>
+
+  <!-- Tailwind Custom Input Style -->
+  <style>
+    .input-style {
+      @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400;
+    }
+  </style>
+
+  <!-- JavaScript Logic -->
+  <script>
+    function checkQualification() {
+      const getVal = id => parseFloat(document.getElementById(id).value) || 0;
+
+      const physics = getVal("physicsTheory") + getVal("physicsPractical");
+      const chemistry = getVal("chemTheory") + getVal("chemPractical");
+      const maths = getVal("mathsTheory") + getVal("mathsPractical");
+
+      const total = physics + chemistry + maths;
+      const aggregate = (total / 300) * 100;
+
+      const qualified = (
+        aggregate >= 75 &&
+        physics >= 60 &&
+        chemistry >= 60 &&
+        maths >= 60
+      );
+
+      const resultDiv = document.getElementById("result");
+      resultDiv.classList.remove("text-green-600", "text-red-600");
+
+      if (qualified) {
+        resultDiv.textContent = `✅ Qualified for BITS! Aggregate: ${aggregate.toFixed(2)}%`;
+        resultDiv.classList.add("text-green-600");
+      } else {
+        resultDiv.textContent = `❌ Not Qualified. Aggregate: ${aggregate.toFixed(2)}%. Must have ≥75% and ≥60 in each subject.`;
+        resultDiv.classList.add("text-red-600");
+      }
+    }
+  </script>
+
+</body>
+</html>
